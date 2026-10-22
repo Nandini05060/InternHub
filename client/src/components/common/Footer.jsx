@@ -20,13 +20,13 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-500 font-medium pt-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              100% verified employer application portals
+              Verified Opportunities with Official Application Links
             </div>
           </div>
 
           {/* Platform Links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3">Platform</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-3">Platform & Career</h4>
             <ul className="space-y-2 text-sm text-slate-600">
               <li>
                 <Link to="/internships" className="hover:text-indigo-600 transition-colors">
@@ -34,18 +34,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/student/resume-builder" className="hover:text-indigo-600 transition-colors">
+                  ATS Resume Builder
+                </Link>
+              </li>
+              <li>
+                <Link to="/student/resume-analyzer" className="hover:text-indigo-600 transition-colors">
+                  Resume Analyzer
+                </Link>
+              </li>
+              <li>
+                <Link to="/student/placement-prep" className="hover:text-indigo-600 transition-colors">
+                  Placement Preparation
+                </Link>
+              </li>
+              <li>
                 <Link to="/student/dashboard" className="hover:text-indigo-600 transition-colors">
-                  Application Tracker
-                </Link>
-              </li>
-              <li>
-                <Link to="/student/saved" className="hover:text-indigo-600 transition-colors">
-                  Saved Bookmarks
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="hover:text-indigo-600 transition-colors">
-                  Student Sign In
+                  Student Pipeline
                 </Link>
               </li>
             </ul>

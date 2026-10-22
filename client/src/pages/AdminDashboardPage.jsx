@@ -8,6 +8,7 @@ import { internshipApi } from '../api/internshipApi.js';
 import { Shield, Briefcase, Users, Plus, RefreshCw } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Navigate } from 'react-router-dom';
+import { PageHeading } from '../components/common/PageHeading.jsx';
 
 export function AdminDashboardPage() {
   const { user, isAdmin, loading: authLoading } = useAuth();
@@ -65,40 +66,36 @@ export function AdminDashboardPage() {
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       {/* Admin Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="p-1.5 rounded-lg bg-indigo-600 text-white">
-              <Shield className="w-4 h-4" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Administrator Console
-            </h1>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Verify internship listings, remove expired links, and moderate student accounts.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={loadAdminData}
-            disabled={loading}
-            className="btn-secondary text-xs py-2 px-3"
-            title="Refresh data"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
-          <button
-            onClick={handleOpenAdd}
-            className="btn-primary text-xs py-2 px-4 shadow-sm"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Post Verified Internship</span>
-          </button>
-        </div>
-      </div>
+      <PageHeading
+        title="Administrator Console"
+        badge="Super Admin"
+        badgeColor="indigo"
+        subtitle="Verify internship listings, remove expired links, and moderate student accounts."
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Admin Portal' }
+        ]}
+        actions={
+          <>
+            <button
+              onClick={loadAdminData}
+              disabled={loading}
+              className="btn-secondary text-xs py-2 px-3"
+              title="Refresh data"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
+            </button>
+            <button
+              onClick={handleOpenAdd}
+              className="btn-primary text-xs py-2 px-4 shadow-sm"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Post Verified Internship</span>
+            </button>
+          </>
+        }
+      />
 
       {/* Overview Metric Cards */}
       <StatsOverview stats={stats} />

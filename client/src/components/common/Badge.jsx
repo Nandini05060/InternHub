@@ -84,3 +84,22 @@ export function DeadlineBadge({ deadline, className = '' }) {
     </span>
   );
 }
+
+export function SkillBadge({ skill, onClick, className = '' }) {
+  if (!skill) return null;
+  const isClickable = Boolean(onClick);
+
+  return (
+    <span
+      onClick={onClick}
+      role={isClickable ? 'button' : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      onKeyDown={isClickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
+      className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100/90 text-slate-700 border border-slate-200/80 transition-colors ${
+        isClickable ? 'hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 cursor-pointer' : ''
+      } ${className}`}
+    >
+      {skill}
+    </span>
+  );
+}
