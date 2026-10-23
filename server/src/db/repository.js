@@ -1305,6 +1305,34 @@ export async function togglePlacementTask(taskId, userId) {
   return JSON.parse(JSON.stringify(task));
 }
 
+export async function updatePlacementTask(taskId, userId, updateData) {
+  const numTaskId = parseInt(taskId, 10);
+  const numUserId = parseInt(userId, 10);
+
+  if (isDbConnected()) {
+    const pool = await getDbPool();
+    const fields = [];
+    const values = [];
+    for (const key of ['category', 'title', 'description', 'priority', 'deadline', 'is_completed']) {
+      if (updateData[key] !== undefined) {
+        fields.push(`${key} = ?`);
+        values.push(key === 'is_completed' ? (updateData[key] ? 1 : 0) : updateData[key]);
+      }
+    }
+    if (fields.length > 0) {
+      values.push(numTaskId, numUserId);
+      await pool.query(`UPDATE placement_tasks SET ${fields.join(', ')} WHERE id = ? AND user_id = ?`, values);
+    }
+    const [rows] = await pool.query('SELECT * FROM placement_tasks WHERE id = ?', [numTaskId]);
+    return rows[0] ? { ...rows[0], is_completed: Boolean(rows[0].is_completed) } : null;
+  }
+
+  const task = (store.placementTasks || []).find(t => t.id === numTaskId && t.user_id === numUserId);
+  if (!task) return null;
+  Object.assign(task, updateData);
+  return JSON.parse(JSON.stringify(task));
+}
+
 export async function deletePlacementTask(taskId, userId) {
   const numTaskId = parseInt(taskId, 10);
   const numUserId = parseInt(userId, 10);

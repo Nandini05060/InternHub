@@ -32,7 +32,10 @@ export async function apiClient(endpoint, options = {}) {
         localStorage.removeItem('internhub_user');
         window.dispatchEvent(new Event('auth-expired'));
       }
-      const error = new Error(result.message || `Request failed with status ${response.status}`);
+      const fallbackMsg = (response.status === 500 || response.status === 503)
+        ? 'Cannot reach backend server. Please verify the server is running on port 5000.'
+        : `Request failed with status ${response.status}`;
+      const error = new Error(result.message || fallbackMsg);
       error.status = response.status;
       error.data = result;
       throw error;

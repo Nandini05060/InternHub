@@ -10,7 +10,18 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5000',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        configure: (proxy) => {
+          proxy.on('error', (err, _req, res) => {
+            if (res.writeHead && !res.headersSent) {
+              res.writeHead(503, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                success: false,
+                message: 'Backend server is not running on port 5000. Please run "npm run dev" or "npm run dev:server".'
+              }));
+            }
+          });
+        }
       }
     }
   },

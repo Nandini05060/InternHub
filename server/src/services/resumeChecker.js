@@ -1,4 +1,6 @@
-import pdfParse from 'pdf-parse';
+import * as pdfParseModule from 'pdf-parse';
+
+const PDFParse = pdfParseModule.PDFParse || pdfParseModule.default || pdfParseModule;
 
 // Comprehensive technical and career keywords dictionary
 const COMMON_TECH_KEYWORDS = [
@@ -420,8 +422,16 @@ export async function extractTextFromUpload(buffer, mimeType = '', filename = ''
   const isPdf = mimeType.includes('pdf') || filename.toLowerCase().endsWith('.pdf');
   if (isPdf) {
     try {
-      const data = await pdfParse(buffer);
-      return data.text || '';
+      if (PDFParse) {
+        if (typeof PDFParse === 'function' && PDFParse.prototype?.getText) {
+          const parser = new PDFParse({ data: buffer });
+          const data = await parser.getText();
+          return data?.text || '';
+        } else if (typeof PDFParse === 'function') {
+          const data = await PDFParse(buffer);
+          return data?.text || '';
+        }
+      }
     } catch (err) {
       console.warn('[ResumeChecker] PDF text extraction fallback:', err.message);
       // Fallback: try raw string conversion if text-based
